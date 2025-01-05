@@ -27,7 +27,7 @@ class App extends Component {
   componentDidUpdate() {
     console.log("App component updated");
   }
-  componentWillUnmount() { 
+  componentWillUnmount() {
     console.log("App component unmounted");
   }
 
@@ -46,6 +46,7 @@ class App extends Component {
 
     return (
       <div className="App">
+        <h1 className="app-title">Monsters Rolodex</h1>
         <SearchBox
           placeholder="search monsters"
           className="search-box"
