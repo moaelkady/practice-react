@@ -14,6 +14,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+    console.log("App component mounted");
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((res) => res.json())
       .then((data) =>
@@ -21,6 +22,13 @@ class App extends Component {
           console.log(this.state)
         )
       );
+  }
+
+  componentDidUpdate() {
+    console.log("App component updated");
+  }
+  componentWillUnmount() { 
+    console.log("App component unmounted");
   }
 
   handleSearchChange = (e) => {
