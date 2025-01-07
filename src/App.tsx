@@ -1,19 +1,24 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, ChangeEvent } from "react";
 import CardList from "./components/card-list/card-list.component";
 import SearchBox from "./components/search-box/search-box.component";
+import { fetchMonsters } from "./utils/data.utils";
 import "./App.css";
 
+export type Monster = {
+  id: number;
+  name: string;
+  email: string;
+}
 const App = () => {
-  const [monsters, setMonsters] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [monsters, setMonsters] = useState<Monster[]>([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [title, setTitle] = useState("");
 
-  const handleSearchChange = useCallback((e) => {
+  const handleSearchChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(e.target.value);
   }, []);
 
-  const handleTitleChange = useCallback((e) => {
+  const handleTitleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   }, []);
 
@@ -25,21 +30,16 @@ const App = () => {
   }, [monsters, searchKeyword]);
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((res) => res.json())
-      .then((data) => {
-        setMonsters(data);
-        setIsLoading(false);
-      });
-
-    return () => {
-      console.log("App component unmounted");
-    };
+    const fetchData = async () => {
+      const monsters = await fetchMonsters<Monster[]>("https://jsonplaceholder.typicode.com/users");
+      setMonsters(monsters);
+    }
+    fetchData();
   }, []);
 
   return (
     <div className="App">
-      <h1 className="app-title">{title}</h1>
+      <h1 className="app-title">{title || "Monster Rolodex"}</h1>
       <SearchBox
         placeholder="search"
         className="search-box"
@@ -52,7 +52,7 @@ const App = () => {
         onChangeHandler={handleTitleChange}
       />
 
-      <CardList monsters={filteredMonsters} isLoading={isLoading} />
+      <CardList monsters={filteredMonsters} />
     </div>
   );
 };

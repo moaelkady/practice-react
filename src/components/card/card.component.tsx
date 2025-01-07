@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import { Monster } from "../../App";
 import "./card.styles.css";
-const Card = ({ id, name, email }) => {
-  useEffect(() => {
-    return () => {
-      console.log(`Card ${id} component unmounted`);
-    };
-  }, []);
+
+type CardProps = {
+  monster: Monster;
+};
+
+const Card = ({ monster }: CardProps) => {
+  const { id, name, email } = monster;
   return (
     <div className="card-container">
       <img
