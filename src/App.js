@@ -7,9 +7,14 @@ const App = () => {
   const [monsters, setMonsters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [title, setTitle] = useState("");
 
   const handleSearchChange = useCallback((e) => {
     setSearchKeyword(e.target.value);
+  }, []);
+
+  const handleTitleChange = useCallback((e) => {
+    setTitle(e.target.value);
   }, []);
 
   const filteredMonsters = useMemo(() => {
@@ -20,7 +25,6 @@ const App = () => {
   }, [monsters, searchKeyword]);
 
   useEffect(() => {
-    console.log("App component mounted");
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((res) => res.json())
       .then((data) => {
@@ -35,12 +39,19 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1 className="app-title">Monsters Rolodex</h1>
+      <h1 className="app-title">{title}</h1>
       <SearchBox
-        placeholder="search monsters"
+        placeholder="search"
         className="search-box"
         onChangeHandler={handleSearchChange}
       />
+      <br />
+      <SearchBox
+        placeholder="Write Title"
+        className="search-box"
+        onChangeHandler={handleTitleChange}
+      />
+
       <CardList monsters={filteredMonsters} isLoading={isLoading} />
     </div>
   );

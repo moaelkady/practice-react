@@ -1,5 +1,11 @@
+import { useEffect } from "react";
 import "./card.styles.css";
 const Card = ({ id, name, email }) => {
+  useEffect(() => {
+    return () => {
+      console.log(`Card ${id} component unmounted`);
+    };
+  }, []);
   return (
     <div className="card-container">
       <img
